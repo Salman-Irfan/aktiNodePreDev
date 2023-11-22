@@ -9,22 +9,30 @@ const getNoteByIdController = require('../../controllers/notesControllers/getNot
 const requireSignIn = require('../../middlewares/authMiddleware');
 
 // create note route
-router.post("/notes", requireSignIn, [
-    body('title').isLength({ min: 1 }),
-    body('description').isLength({ min: 1 })
-] ,createNotesController);
+router.post("/notes",
+    requireSignIn,
+    [
+        body('title').isLength({ min: 1 }),
+        body('description').isLength({ min: 1 })
+    ],
+    createNotesController
+);
 
 // get all notes
 router.get("/notes", getNotesController);
 
 // Update a note
-router.put("/notes/:id", [
-    body('title').isLength({ min: 1 }),
-    body('description').isLength({ min: 1 })
-], updateNoteController);
+router.put("/notes/:id",
+    requireSignIn,
+    [
+        body('title').isLength({ min: 1 }),
+        body('description').isLength({ min: 1 })
+    ],
+    updateNoteController
+);
 
 // Delete a note
-router.delete("/notes/:id", deleteNoteController);
+router.delete("/notes/:id", requireSignIn, deleteNoteController);
 
 // get note by id
 router.get("/note/:id", getNoteByIdController);

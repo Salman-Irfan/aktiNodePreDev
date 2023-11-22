@@ -8,6 +8,7 @@ const path = require('path');
 const getAllUsersController = require('../../controllers/authControllers/getAllUsersController');
 const requireSignIn = require('../../middlewares/authMiddleware');
 const isAdmin = require('../../middlewares/isAdmin');
+const deleteUserController = require('../../controllers/authControllers/deleteUserController');
 
 // multer middleware
 let storage = multer.diskStorage({
@@ -39,7 +40,10 @@ router.post("/register",
 // login route
 router.post('/login', userLoginController );
 
-// get all users
+// delete user
+router.delete('/delete/:id', requireSignIn, deleteUserController);
+
+// get all users - admin
 router.get('/users', requireSignIn, isAdmin, getAllUsersController);
 
-module.exports = router;
+module.exports = router; 

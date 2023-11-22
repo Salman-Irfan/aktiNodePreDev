@@ -1,5 +1,6 @@
 const express = require("express");
 const Note = require("../../models/NoteModel");
+const User = require("../../models/UserModel");
 
 const deleteNoteController = async (req, res) => {
     try {
@@ -10,6 +11,16 @@ const deleteNoteController = async (req, res) => {
 
         if (!existingNote) {
             return res.status(404).json({ error: "Note not found" });
+        }
+
+        // login user details
+        const loggedInUserEmail = req.user.email
+        const loggedInUser = await User.find({ email: loggedInUserEmail })
+        const loggedInUserId = loggedInUser._id
+
+        // Check if the user making the request is the owner of the note
+        if (existingNote.userId !== loggedInUserId) {
+            return res.json({ error: "You are not authorized to edit this note" });
         }
 
         // new: true means if there is new content, then it will be created

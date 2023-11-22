@@ -21,5 +21,5 @@ app.get("/", (req, res) => {
 // Use the base route from /routes/index.js
 app.use('/', require('./routes'));
 app.listen(port, () => {
-    console.log(`Example app listening on http://localhost:${port}`);
+    console.log(`Example app listening on http://localhost:${port}`); 
 });

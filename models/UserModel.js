@@ -65,5 +65,24 @@ const userSchema = new Schema({
     {
         timestamps: true
     });
+// Pre-remove hook to delete associated notes
+userSchema.pre('remove', async function (next) {
+    try {
+        // Access the Note model
+        const Note = require('./NoteModel'); // Replace with the actual path to your Note model
+
+        // Remove all notes associated with the user
+        await Note.deleteMany({ userId: this._id });
+
+        // Continue with the next middleware
+        next();
+    } catch (error) {
+        // Handle the error, e.g., log it
+        console.error('Error deleting associated notes:', error);
+
+        // Continue with the next middleware even if there's an error
+        next();
+    }
+});
 
 module.exports = mongoose.model('User', userSchema);

@@ -10,7 +10,11 @@ const userRegisterController = async (req, res) => {
     const {
         firstName, lastName, email, password, dob, phoneNumber, country, gender, interests, hobbies, skills, experience,
     } = req.body;
-    const profileImage = req.file.filename
+    
+    let profileImage = null 
+    if (req.file.filename) {
+        profileImage = req.file.filename
+    }
 
     // chacking the validations results
     let success = false
