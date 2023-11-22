@@ -16,18 +16,21 @@ const deleteNoteController = async (req, res) => {
         // login user details
         const loggedInUserEmail = req.user.email
         const loggedInUser = await User.find({ email: loggedInUserEmail })
-        const loggedInUserId = loggedInUser._id
+
+        const loggedInUserId = loggedInUser[0]._id.toString();
+        
 
         // Check if the user making the request is the owner of the note
-        if (existingNote.userId !== loggedInUserId) {
-            return res.json({ error: "You are not authorized to edit this note" });
+        if (existingNote.userId.toString() !== loggedInUserId) {
+            return res.json({ error: "You are not authorized to delete this note" });
         }
 
         // new: true means if there is new content, then it will be created
         const deletedNote = await Note.findByIdAndDelete(req.params.id)
         return res.json({
-            "Success": 'note has been deleted',
-            deletedNote});
+            "Success": 'Note has been deleted',
+            deletedNote
+        });
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }

@@ -37,10 +37,11 @@ const updateNoteController = async (req, res) => {
         // login user details
         const loggedInUserEmail = req.user.email
         const loggedInUser = await User.find({ email: loggedInUserEmail})
-        const loggedInUserId= loggedInUser._id
+
+        const loggedInUserId = loggedInUser[0]._id.toString();
 
         // Check if the user making the request is the owner of the note
-        if (existingNote.userId !== loggedInUserId) {
+        if (existingNote.userId.toString() !== loggedInUserId) {
             return res.json({ error: "You are not authorized to edit this note" });
         }
         // Update the note with the provided data using findByIdAndUpdate
