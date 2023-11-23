@@ -7,6 +7,7 @@ const updateNoteController = require('../../controllers/notesControllers/updateN
 const deleteNoteController = require('../../controllers/notesControllers/deleteNoteController');
 const getNoteByIdController = require('../../controllers/notesControllers/getNoteByIdController');
 const requireSignIn = require('../../middlewares/authMiddleware');
+const getUserNotesController = require('../../controllers/notesControllers/getUserNotesController');
 
 // create note route
 router.post("/notes",
@@ -20,6 +21,8 @@ router.post("/notes",
 
 // get all notes
 router.get("/notes", getNotesController);
+// get all notes of loggedInUser
+router.get("/user-notes", requireSignIn, getUserNotesController);
 
 // Update a note
 router.put("/notes/:id",
