@@ -11,11 +11,12 @@ const getUserNotesController = async (req, res) => {
         const userNotes = await Note.find({ userId }).populate({
             path: 'userId',
             select: 'firstName email profileImage'
-        });;
+        });
+
         userNotes.forEach(note => {
             const user = note.userId;
             if (user.profileImage && !user.profileImage.startsWith('http')) {
-                user.profileImage = `${req.protocol}://${req.get('host')}/profileImages/${user.profileImage}`;
+                user.profileImage = `${req.protocol}://${req.get('host')}/profileImages/${user.profileImage}`; 
             }
         });
         return res.json(userNotes);
