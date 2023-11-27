@@ -3,7 +3,9 @@ const Note = require("../../models/NoteModel");
 
 const getNotesController = async (req, res) => {
     try {
-        const notes = await Note.find().populate({
+        const notes = await Note.find()
+        // sirf user id aye gi
+        .populate({
             path: 'userId',
             select: 'firstName email profileImage'
         });
