@@ -20,9 +20,12 @@ const sendEmail = async (email, subject, text)=>{
         await transporter.sendMail({
             from: process.env.USER,
             to: email,
-            subject: subject
+            subject: subject,
+            text: text
         })
+        console.log('Email sent successfully')
     } catch (error) {
+        console.log('Email not sent')
         console.log(error);
         return response.json({
             error: error.message
