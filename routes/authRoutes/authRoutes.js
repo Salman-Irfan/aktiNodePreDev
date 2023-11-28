@@ -9,6 +9,7 @@ const getAllUsersController = require('../../controllers/authControllers/getAllU
 const requireSignIn = require('../../middlewares/authMiddleware');
 const isAdmin = require('../../middlewares/isAdmin');
 const deleteUserController = require('../../controllers/authControllers/deleteUserController');
+const getEmailVerificationController = require('../../controllers/authControllers/getEmailVerificationController');
 
 // multer middleware
 let storage = multer.diskStorage({
@@ -37,8 +38,11 @@ router.post("/register",
     userRegisterController
 );
 
+// get email verification link
+router.get('/users/:id/verify/:token', getEmailVerificationController)
+
 // login route
-router.post('/login', userLoginController );
+router.post('/login', userLoginController);
 
 // delete user
 router.delete('/delete/:id', requireSignIn, deleteUserController);

@@ -57,7 +57,7 @@ const userRegisterController = async (req, res) => {
             token: crypto.randomBytes(32).toString("hex")
         }).save();
         // making url
-        const url = `${process.env.BASE_URL}/users/${newUser._id}/verify/${token.token}`
+        const url = `${process.env.NODE_BASE_URL}${process.env.APIV1}/users/${newUser._id}/verify/${token.token}`
         // sending email
         await sendEmail(newUser.email, 'Verify Email', url);
 
