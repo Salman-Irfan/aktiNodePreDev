@@ -15,11 +15,16 @@ const userRegisterController = async (req, res) => {
         firstName, lastName, email, password, dob, phoneNumber, country, gender, interests, hobbies, skills, experience,
     } = req.body;
     
-    let profileImage = null 
-    if (req.file.filename) {
-        profileImage = req.file.filename
+    let profileImage = null;
+    let documentFilenames = [];
+    // handle multiple documents
+    if (req.files['profileImage'] && req.files['profileImage'][0].filename) {
+        profileImage = req.files['profileImage'][0].filename;
     }
-
+    // handle multiple documents
+    if (req.files['document'] && req.files['document'].length > 0) {
+        documentFilenames = req.files['document'].map(file => file.filename);
+    }
     // chacking the validations results
     let success = false
     // if there are errors, return bad request and errors
@@ -45,7 +50,7 @@ const userRegisterController = async (req, res) => {
         // Create a new User instance with the extracted data
         const newUser = new User({
             firstName, lastName, email, password: hashedPassword, dob, phoneNumber, country, gender,
-            interests, hobbies, skills, experience, profileImage,
+            interests, hobbies, skills, experience, profileImage, documents: documentFilenames,
         });
         // Save the new user to the database
         await newUser.save();

@@ -13,21 +13,26 @@ const getEmailVerificationController = require('../../controllers/authController
 
 // multer middleware
 let storage = multer.diskStorage({
-    destination: function (req, res, cb) {
-        cb(null, path.resolve(__dirname, '../../public/profileImages'));
+    destination: function (req, file, cb) {
+        if (file.fieldname === "profileImage") {
+            cb(null, path.resolve(__dirname, '../../public/profileImages'));
+        } else if (file.fieldname === "document") {
+            cb(null, path.resolve(__dirname, '../../public/documents'));
+        }
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + "_" + Date.now() + "_" + file.originalname)
     }
-})
+});
 
-let uploadProfileImage = multer({
+
+let upload = multer({
     storage: storage,
-}).single("profileImage")
+}).fields([{ name: 'profileImage', maxCount: 1 }, { name: 'document', maxCount: 2 }])
 
 // create note route
 router.post("/register",
-    uploadProfileImage,
+    upload,
     [
         body("firstName", "Enter a valid name min 3 characters").isLength({
             min: 3,
